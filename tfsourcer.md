@@ -10,4 +10,6 @@ Currently tfupdate only has: `tfupdate module terraform-aws-modules/vpc/aws -v 2
 
 See what happens when:
 
-- A file is passed in with no version attr
+- A file is passed in with no version attr on the existing file
+  - A version must be specified to update to
+  - What happens with local modules?
