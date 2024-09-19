@@ -6,4 +6,8 @@
 - [ ] pass in a module name and add its version (new) - for all child modules?
 
 🤔 Determine on the last two what the best structure is for argument parsing:
-Currently tfupdate only has: `tfupdate module -r terraform-aws-modules/vpc/aws 2.0.0`
+Currently tfupdate only has: `tfupdate module terraform-aws-modules/vpc/aws -v 2.0.0`
+
+See what happens when:
+
+- A file is passed in with no version attr
