@@ -3,3 +3,5 @@
 bin/
 tmp/
 dist/
+.DS_Store
+**/tfsourcer-module/**
