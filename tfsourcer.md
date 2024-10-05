@@ -13,3 +13,5 @@ See what happens when:
 - A file is passed in with no version attr on the existing file
   - A version must be specified to update to
   - What happens with local modules?
+
+- absolute paths not supported by afero.ts
