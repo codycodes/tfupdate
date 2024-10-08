@@ -15,3 +15,7 @@ See what happens when:
   - What happens with local modules?
 
 - absolute paths not supported by afero.ts
+
+## tests
+
+should match from a prefixed source of something to something else. I want to start with localterraform.com to a terraform cloud/enterprise source and vice-versa.
