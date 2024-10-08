@@ -21,6 +21,9 @@ type Option struct {
 	// If an updateType is provider or module, Set a name of provider or module.
 	name string
 
+	oldSource string
+	newSource string
+
 	// a new version constraint
 	version string
 

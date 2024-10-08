@@ -46,7 +46,7 @@ func TestNewUpdater(t *testing.T) {
 				name:       "terraform-aws-modules/vpc/aws",
 				version:    "2.14.0",
 			},
-			want: &ModuleUpdater{
+			want: &TfsModuleUpdater{
 				name:    "terraform-aws-modules/vpc/aws",
 				version: "2.14.0",
 			},
@@ -85,7 +85,7 @@ func TestNewUpdater(t *testing.T) {
 		opts := []cmp.Option{
 			cmp.AllowUnexported(TerraformUpdater{}),
 			cmp.AllowUnexported(ProviderUpdater{}),
-			cmp.AllowUnexported(ModuleUpdater{}),
+			cmp.AllowUnexported(TfsModuleUpdater{}),
 			cmp.AllowUnexported(LockUpdater{}),
 			cmpopts.IgnoreInterfaces(struct{ lock.Index }{}),
 		}

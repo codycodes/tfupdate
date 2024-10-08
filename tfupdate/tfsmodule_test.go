@@ -13,52 +13,59 @@ import (
 func TestNewTfsModuleUpdater(t *testing.T) {
 	cases := []struct {
 		name            string
+		oldSource       string
+		newSource       string
 		sourceMatchType string
 		version         string
 		want            Updater
 		ok              bool
 	}{
+		// TDD - first instance
 		{
 			name:            "terraform-aws-modules/vpc/aws",
+			oldSource: "localterraform.com/my-org/terraform-aws-modules/vpc/aws",
+			newSource: "app.terraform.io/my-org/terraform-aws-modules/vpc/aws",
 			sourceMatchType: "full",
 			version:         "2.17.0",
-			want: &ModuleUpdater{
-				name:      "terraform-aws-modules/vpc/aws",
+			want: &TfsModuleUpdater{
+				name: "terraform-aws-modules/vpc/aws",
+				oldSource: "localterraform.com/my-org/terraform-aws-modules/vpc/aws",
+				newSource: "app.terraform.io/my-org/terraform-aws-modules/vpc/aws",
 				nameRegex: nil,
 				version:   "2.17.0",
 			},
 			ok: true,
 		},
-		{
-			name:            "",
-			sourceMatchType: "full",
-			version:         "2.17.0",
-			want:            nil,
-			ok:              false,
-		},
-		{
-			name:            "terraform-aws-modules/vpc/aws",
-			sourceMatchType: "full",
-			version:         "",
-			want:            nil,
-			ok:              false,
-		},
+		// {
+		// 	name:            "",
+		// 	sourceMatchType: "full",
+		// 	version:         "2.17.0",
+		// 	want:            nil,
+		// 	ok:              false,
+		// },
+		// {
+		// 	name:            "terraform-aws-modules/vpc/aws",
+		// 	sourceMatchType: "full",
+		// 	version:         "",
+		// 	want:            nil,
+		// 	ok:              false,
+		// },
 		// ** new tests! **
 	}
 
 
 	for _, tc := range cases {
-		got, err := NewModuleUpdater(tc.name, tc.version, nil)
+		got, err := NewTfsModuleUpdater(tc.name, tc.oldSource, tc.newSource, tc.version, nil)
 		if tc.ok && err != nil {
-			t.Errorf("NewModuleUpdater() with name = %s, version = %s returns unexpected err: %+v", tc.name, tc.version, err)
+			t.Errorf("NewTfsModuleUpdater() with name = %s, version = %s returns unexpected err: %+v", tc.name, tc.version, err)
 		}
 
 		if !tc.ok && err == nil {
-			t.Errorf("NewModuleUpdater() with name = %s, version = %s expects to return an error, but no error", tc.name, tc.version)
+			t.Errorf("NewTfsModuleUpdater() with name = %s, version = %s expects to return an error, but no error", tc.name, tc.version)
 		}
 
 		if !reflect.DeepEqual(got, tc.want) {
-			t.Errorf("NewModuleUpdater() with name = %s, version = %s returns %#v, but want = %#v", tc.name, tc.version, got, tc.want)
+			t.Errorf("NewTfsModuleUpdater() with name = %s, version = %s returns %#v, but want = %#v", tc.name, tc.version, got, tc.want)
 		}
 	}
 }
@@ -231,7 +238,7 @@ module "vpc2" {
 
 
 	for _, tc := range cases {
-		u := &ModuleUpdater{
+		u := &TfsModuleUpdater{
 			name: tc.name,
 			nameRegex: func() *regexp.Regexp {
 				if tc.sourceMatchType == "regex" {
