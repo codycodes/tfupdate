@@ -29,7 +29,7 @@ func TestNewTfsModuleUpdater(t *testing.T) {
 			version:         "2.17.0",
 			want: &TfsModuleUpdater{
 				name: "terraform-aws-modules/vpc/aws",
-				source: "localterraform.com/my-org/terraform-aws-modules/vpc/aws",
+				source: "app.terraform.io/my-org/terraform-aws-modules/vpc/aws",
 				newSource: "app.terraform.io/my-org/terraform-aws-modules/vpc/aws",
 				nameRegex: nil,
 				version:   "2.17.0",
