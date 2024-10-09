@@ -13,7 +13,7 @@ import (
 func TestNewTfsModuleUpdater(t *testing.T) {
 	cases := []struct {
 		name            string
-		source       string
+		source          string
 		newSource       string
 		sourceMatchType string
 		version         string
