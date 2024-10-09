@@ -13,7 +13,7 @@ import (
 func TestNewModuleUpdater(t *testing.T) {
 	cases := []struct {
 		name 						string
-		oldSource 				string
+		source 				string
 		newSource 				string
 		sourceMatchType string
 		version         string
@@ -23,12 +23,12 @@ func TestNewModuleUpdater(t *testing.T) {
 		{
 			name:            "terraform-aws-modules/vpc/aws",
 			sourceMatchType: "full",
-			oldSource: "localterraform.com/my-org/terraform-aws-modules/vpc/aws",
+			source: "localterraform.com/my-org/terraform-aws-modules/vpc/aws",
 			newSource: "app.terraform.io/my-org/terraform-aws-modules/vpc/aws",
 			version:         "2.17.0",
 			want: &TfsModuleUpdater{
 				name:      "terraform-aws-modules/vpc/aws",
-				oldSource: "localterraform.com/my-org/terraform-aws-modules/vpc/aws",
+				source: "localterraform.com/my-org/terraform-aws-modules/vpc/aws",
 				newSource: "app.terraform.io/my-org/terraform-aws-modules/vpc/aws",
 				nameRegex: nil,
 				version:   "2.17.0",

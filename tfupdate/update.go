@@ -34,7 +34,7 @@ func NewUpdater(o Option) (Updater, error) {
 	case "provider":
 		return NewProviderUpdater(o.name, o.version)
 	case "module":
-		return NewTfsModuleUpdater(o.name, o.oldSource, o.newSource, o.version, o.nameRegex)
+		return NewTfsModuleUpdater(o.name, o.source, o.newSource, o.version, o.nameRegex)
 	case "lock":
 		return NewLockUpdater(o.platforms, lockIndex)
 	default:

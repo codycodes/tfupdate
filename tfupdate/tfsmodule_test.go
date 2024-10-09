@@ -13,7 +13,7 @@ import (
 func TestNewTfsModuleUpdater(t *testing.T) {
 	cases := []struct {
 		name            string
-		oldSource       string
+		source       string
 		newSource       string
 		sourceMatchType string
 		version         string
@@ -23,13 +23,13 @@ func TestNewTfsModuleUpdater(t *testing.T) {
 		// TDD - first instance
 		{
 			name:            "terraform-aws-modules/vpc/aws",
-			oldSource: "localterraform.com/my-org/terraform-aws-modules/vpc/aws",
+			source: "localterraform.com/my-org/terraform-aws-modules/vpc/aws",
 			newSource: "app.terraform.io/my-org/terraform-aws-modules/vpc/aws",
 			sourceMatchType: "full",
 			version:         "2.17.0",
 			want: &TfsModuleUpdater{
 				name: "terraform-aws-modules/vpc/aws",
-				oldSource: "localterraform.com/my-org/terraform-aws-modules/vpc/aws",
+				source: "localterraform.com/my-org/terraform-aws-modules/vpc/aws",
 				newSource: "app.terraform.io/my-org/terraform-aws-modules/vpc/aws",
 				nameRegex: nil,
 				version:   "2.17.0",
@@ -55,7 +55,7 @@ func TestNewTfsModuleUpdater(t *testing.T) {
 
 
 	for _, tc := range cases {
-		got, err := NewTfsModuleUpdater(tc.name, tc.oldSource, tc.newSource, tc.version, nil)
+		got, err := NewTfsModuleUpdater(tc.name, tc.source, tc.newSource, tc.version, nil)
 		if tc.ok && err != nil {
 			t.Errorf("NewTfsModuleUpdater() with name = %s, version = %s returns unexpected err: %+v", tc.name, tc.version, err)
 		}
