@@ -36,21 +36,21 @@ func TestNewTfsModuleUpdater(t *testing.T) {
 			},
 			ok: true,
 		},
-		// {
-		// 	name:            "",
-		// 	sourceMatchType: "full",
-		// 	version:         "2.17.0",
-		// 	want:            nil,
-		// 	ok:              false,
-		// },
-		// {
-		// 	name:            "terraform-aws-modules/vpc/aws",
-		// 	sourceMatchType: "full",
-		// 	version:         "",
-		// 	want:            nil,
-		// 	ok:              false,
-		// },
-		// ** new tests! **
+		{
+			name: "terraform-aws-modules/vpc/aws",
+			source: "localterraform.com/my-org/terraform-aws-modules/vpc/aws",
+			newSource: "./modules/vpc",
+			sourceMatchType: "full",
+			version:         "", // TODO: remove this as a required input
+			want: &TfsModuleUpdater{
+				name: "terraform-aws-modules/vpc/aws",
+				source: "./modules/vpc",
+				newSource: "./modules/vpc",
+				nameRegex: nil,
+				version: "", // TODO: remove this as a required inpu
+			},
+			ok: true,
+		},
 	}
 
 
