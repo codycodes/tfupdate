@@ -233,9 +233,8 @@ module "vpc2" {
 `,
 			ok: true,
 		},
-	// *** new tests! ***
+		// hello
 	}
-
 
 	for _, tc := range cases {
 		u := &TfsModuleUpdater{
@@ -328,7 +327,6 @@ module "vpc" {
 			name:    "git::https://example.com/vpc.git?ref=vhoge",
 			version: "",
 		},
-		// ** new tests! **
 	}
 
 	for _, tc := range cases {
