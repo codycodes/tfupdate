@@ -24,12 +24,9 @@ func TestNewModuleUpdater(t *testing.T) {
 			name:            "terraform-aws-modules/vpc/aws",
 			sourceMatchType: "full",
 			source: "localterraform.com/my-org/terraform-aws-modules/vpc/aws",
-			newSource: "app.terraform.io/my-org/terraform-aws-modules/vpc/aws",
 			version:         "2.17.0",
-			want: &TfsModuleUpdater{
+			want: &ModuleUpdater{
 				name:      "terraform-aws-modules/vpc/aws",
-				source: "localterraform.com/my-org/terraform-aws-modules/vpc/aws",
-				newSource: "app.terraform.io/my-org/terraform-aws-modules/vpc/aws",
 				nameRegex: nil,
 				version:   "2.17.0",
 			},
@@ -233,7 +230,7 @@ module "vpc2" {
 	}
 
 	for _, tc := range cases {
-		u := &TfsModuleUpdater{
+		u := &ModuleUpdater{
 			name: tc.name,
 			nameRegex: func() *regexp.Regexp {
 				if tc.sourceMatchType == "regex" {
