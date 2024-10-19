@@ -70,11 +70,13 @@ func TestNewTfsModuleUpdater(t *testing.T) {
 	}
 }
 
-func TestTfsUpdateModule(t *testing.T) {
+func TestTfsModuleUpdater_PrivateRegistryToPrivateRegistry(t *testing.T) {
 	cases := []struct {
 		filename        string
 		src             string
 		name            string
+		source					string
+		newSource				string
 		sourceMatchType string
 		version         string
 		want            string
@@ -84,17 +86,18 @@ func TestTfsUpdateModule(t *testing.T) {
 			filename: "main.tf",
 			src: `
 module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
+  source  = "localterraform.com/my-org/terraform-aws-modules/vpc/aws"
   version = "2.17.0"
 }
 `,
 			name:            "terraform-aws-modules/vpc/aws",
-			version:         "2.18.0",
+			source: "localterraform.com/my-org/terraform-aws-modules/vpc/aws",
+			newSource: "app.terraform.io/my-org/terraform-aws-modules/vpc/aws",
 			sourceMatchType: "full",
 			want: `
 module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "2.18.0"
+  source  = "app.terraform.io/my-org/terraform-aws-modules/vpc/aws",
+  version = "2.17.0"
 }
 `,
 			ok: true,
@@ -103,24 +106,25 @@ module "vpc" {
 			filename: "main.tf",
 			src: `
 module "vpc1" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "2.17.0"
-}
-module "vpc2" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "2.17.0"
-}
-`,
-			name:            "terraform-aws-modules/vpc/aws",
-			version:         "2.18.0",
-			sourceMatchType: "full",
-			want: `
-module "vpc1" {
-  source  = "terraform-aws-modules/vpc/aws"
+  source  = "localterraform.com/my-org/terraform-aws-modules/vpc/aws"
   version = "2.18.0"
 }
 module "vpc2" {
-  source  = "terraform-aws-modules/vpc/aws"
+  source  = "localterraform.com/my-org/terraform-aws-modules/vpc/aws"
+  version = "2.18.0"
+}
+`,
+			name:            "terraform-aws-modules/vpc/aws",
+			source: "localterraform.com/my-org/terraform-aws-modules/vpc/aws",
+			newSource: "app.terraform.io/my-org/terraform-aws-modules/vpc/aws",
+			sourceMatchType: "full",
+			want: `
+module "vpc1" {
+  source  = "app.terraform.io/my-org/terraform-aws-modules/vpc/aws"
+  version = "2.18.0"
+}
+module "vpc2" {
+  source  = "app.terraform.io/my-org/terraform-aws-modules/vpc/aws"
   version = "2.18.0"
 }
 `,
@@ -233,12 +237,13 @@ module "vpc2" {
 `,
 			ok: true,
 		},
-		// hello
 	}
 
 	for _, tc := range cases {
 		u := &TfsModuleUpdater{
 			name: tc.name,
+			source: tc.source,
+			newSource: tc.newSource,
 			nameRegex: func() *regexp.Regexp {
 				if tc.sourceMatchType == "regex" {
 					return regexp.MustCompile(tc.name)
