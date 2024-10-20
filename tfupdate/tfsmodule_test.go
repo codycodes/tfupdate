@@ -114,7 +114,7 @@ module "vpc2" {
   version = "2.18.0"
 }
 `,
-			name:            "terraform-aws-modules/vpc/aws",
+			name: "terraform-aws-modules/vpc/aws",
 			source: "localterraform.com/my-org/terraform-aws-modules/vpc/aws",
 			newSource: "app.terraform.io/my-org/terraform-aws-modules/vpc/aws",
 			sourceMatchType: "full",
@@ -131,6 +131,7 @@ module "vpc2" {
 			ok: true,
 		},
 		{
+			// do not update non-matching module name
 			filename: "main.tf",
 			src: `
 module "vpc" {
@@ -139,6 +140,8 @@ module "vpc" {
 }
 `,
 			name:            "terraform-aws-modules/hoge/aws",
+			source: "terraform-aws-modules/hoge/aws",
+			newSource: "terraform-aws-modules/hoge/aws",
 			sourceMatchType: "full",
 			version:         "2.18.0",
 			want: `
@@ -150,6 +153,8 @@ module "vpc" {
 			ok: true,
 		},
 		{
+			// update module with no version
+			// same private registry
 			filename: "main.tf",
 			src: `
 module "vpc" {
@@ -157,28 +162,33 @@ module "vpc" {
 }
 `,
 			name:            "terraform-aws-modules/vpc/aws",
+			source: "terraform-aws-modules/vpc/aws",
+			newSource: "terraform-aws-modules/vpc2/aws",
 			sourceMatchType: "full",
 			version:         "2.18.0",
 			want: `
 module "vpc" {
-  source = "terraform-aws-modules/vpc/aws"
+  source = "terraform-aws-modules/vpc2/aws"
 }
 `,
 			ok: true,
 		},
 		{
+			// git source
 			filename: "main.tf",
 			src: `
 module "vpc" {
-  source = "git::https://example.com/vpc.git?ref=v1.2.0"
+  source = "git::https://example.com/vpc.git"
 }
 `,
 			name:            "git::https://example.com/vpc.git",
+			source: "git::https://example.com/vpc.git",
+			newSource: "git::https://example2.com/vpc.git",
 			sourceMatchType: "full",
 			version:         "1.3.0",
 			want: `
 module "vpc" {
-  source = "git::https://example.com/vpc.git?ref=v1.3.0"
+  source = "git::https://example2.com/vpc.git"
 }
 `,
 			ok: true,
@@ -196,6 +206,7 @@ module "vpc2" {
 }
 `,
 			name:            "terraform-aws-modules.git/",
+			// TODO: a way to match all modules in the whole input
 			version:         "2.18.0",
 			sourceMatchType: "regex",
 			want: `
