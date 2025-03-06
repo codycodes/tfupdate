@@ -141,9 +141,9 @@ module "vpc" {
 `,
 			name:            "terraform-aws-modules/hoge/aws",
 			source: "terraform-aws-modules/hoge/aws",
-			newSource: "terraform-aws-modules/hoge/aws",
+			newSource: "terraform-aws-modules/hoge/aws", // this could be a different module
 			sourceMatchType: "full",
-			version:         "2.18.0",
+			// version:         "2.18.0",
 			want: `
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
@@ -163,9 +163,9 @@ module "vpc" {
 `,
 			name:            "terraform-aws-modules/vpc/aws",
 			source: "terraform-aws-modules/vpc/aws",
-			newSource: "terraform-aws-modules/vpc2/aws",
+			newSource: "terraform-aws-modules/vpc2/aws", // this could be more distinct
 			sourceMatchType: "full",
-			version:         "2.18.0",
+			// version:         "2.18.0",
 			want: `
 module "vpc" {
   source = "terraform-aws-modules/vpc2/aws"
@@ -183,9 +183,9 @@ module "vpc" {
 `,
 			name:            "git::https://example.com/vpc.git",
 			source: "git::https://example.com/vpc.git",
-			newSource: "git::https://example2.com/vpc.git",
+			newSource: "git::https://example2.com/vpc.git", // this could be more distinct
 			sourceMatchType: "full",
-			version:         "1.3.0",
+			// version:         "1.3.0", // TODO: may need to check the version here
 			want: `
 module "vpc" {
   source = "git::https://example2.com/vpc.git"
@@ -207,16 +207,18 @@ module "vpc2" {
 `,
 			name:            "terraform-aws-modules.git/",
 			// TODO: a way to match all modules in the whole input
-			version:         "2.18.0",
+			source: "terraform-aws-modules.git/",
+			newSource: "terraform-aws-modules.git/", // TODO:
+			// version:         "2.18.0",
 			sourceMatchType: "regex",
 			want: `
 module "vpc1" {
   source  = "terraform-aws-modules.git/vpc/aws1"
-  version = "2.18.0"
+  version = "2.17.0"
 }
 module "vpc2" {
   source  = "terraform-aws-modules.git/vpc/aws2"
-  version = "2.18.0"
+  version = "2.17.0"
 }
 `,
 			ok: true,
@@ -270,15 +272,15 @@ module "vpc2" {
 
 		err := u.Update(context.Background(), nil, tc.filename, f)
 		if tc.ok && err != nil {
-			t.Errorf("Update() with src = %s, name = %s, version = %s returns unexpected err: %+v", tc.src, tc.name, tc.version, err)
+			t.Errorf("Update() with src = %s, newSrc = %s, name = %s, version = %s returns unexpected err: %+v", tc.src, tc.newSource, tc.name, tc.version, err)
 		}
 		if !tc.ok && err == nil {
-			t.Errorf("Update() with src = %s, name = %s, version = %s expects to return an error, but no error", tc.src, tc.name, tc.version)
+			t.Errorf("Update() with src = %s, newSrc = %s, name = %s, version = %s expects to return an error, but no error", tc.src, tc.newSource, tc.name, tc.version)
 		}
 
 		got := string(hclwrite.Format(f.BuildTokens(nil).Bytes()))
 		if got != tc.want {
-			t.Errorf("Update() with src = %s, name = %s, version = %s returns %s, but want = %s", tc.src, tc.name, tc.version, got, tc.want)
+			t.Errorf("Update() with src = %s, newSrc = %s, name = %s, version = %s returns %s, but want = %s", tc.src, tc.newSource, tc.name, tc.version, got, tc.want)
 		}
 	}
 }
