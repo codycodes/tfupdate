@@ -82,9 +82,10 @@ func TestTfsModuleUpdater_PrivateRegistryToPrivateRegistry(t *testing.T) {
 		want            string
 		ok              bool
 	}{
+		// Follow the cases shown on https://developer.hashicorp.com/terraform/language/modules/sources
 		// TODO: create a test case such that the newSource is not a valid source, which should error out
 		{
-			// single module update
+			// single module update - localterraform.com to some registry
 			// TODO: implement the logic to make this test case pass
 			filename: "main.tf",
 			src: `
@@ -179,6 +180,7 @@ module "vpc" {
 			ok: true,
 		},
 		{
+			// TODO: implement the logic to make this test case pass
 			// git source
 			filename: "main.tf",
 			src: `
@@ -186,11 +188,10 @@ module "vpc" {
   source = "git::https://example.com/vpc.git"
 }
 `,
-			name:            "git::https://example.com/vpc.git",
+			name: "git::https://example.com/vpc.git",
 			source: "git::https://example.com/vpc.git",
-			newSource: "git::https://example2.com/vpc.git", // this could be more distinct
+			newSource: "git::https://example2.com/vpc.git",
 			sourceMatchType: "full",
-			// version:         "1.3.0", // TODO: may need to check the version here
 			want: `
 module "vpc" {
   source = "git::https://example2.com/vpc.git"
@@ -198,6 +199,8 @@ module "vpc" {
 `,
 			ok: true,
 		},
+
+// TODO: add new test cases for regex support & keep them separated for now
 		{
 			filename: "main.tf",
 			src: `
@@ -210,8 +213,7 @@ module "vpc2" {
   version = "2.17.0"
 }
 `,
-			name:            "terraform-aws-modules.git/",
-			// TODO: a way to match all modules in the whole input
+			name: "terraform-aws-modules.git/",
 			source: "terraform-aws-modules.git/",
 			newSource: "terraform-aws-modules.git/", // TODO:
 			// version:         "2.18.0",
@@ -290,6 +292,7 @@ module "vpc2" {
 	}
 }
 
+// TODO: update the name of the original test function to be for registry to registry
 func TestParseTfsModuleSource(t *testing.T) {
 	cases := []struct {
 		src     string
