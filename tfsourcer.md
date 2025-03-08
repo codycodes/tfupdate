@@ -19,3 +19,9 @@ See what happens when:
 ## tests
 
 should match from a prefixed source of something to something else. I want to start with localterraform.com to a terraform cloud/enterprise source and vice-versa.
+
+Simple things to start with:
+
+- [ ] Do not change a source if newSource is not valid
+- [ ] Ability to change a single module that does not have a specified version
+- [ ] Do not modify modules which do not match
