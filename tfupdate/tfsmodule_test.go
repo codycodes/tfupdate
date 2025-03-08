@@ -70,7 +70,7 @@ func TestNewTfsModuleUpdater(t *testing.T) {
 	}
 }
 
-func TestTfsModuleUpdater_PrivateRegistryToPrivateRegistry(t *testing.T) {
+func TestTfsModuleUpdaterHashiCorpModuleSources(t *testing.T) {
 	cases := []struct {
 		filename        string
 		src             string
