@@ -199,7 +199,53 @@ module "vpc" {
 `,
 			ok: true,
 		},
+	}
 
+	for _, tc := range cases {
+		u := &TfsModuleUpdater{
+			name: tc.name,
+			source: tc.source,
+			newSource: tc.newSource,
+			nameRegex: func() *regexp.Regexp {
+				if tc.sourceMatchType == "regex" {
+					return regexp.MustCompile(tc.name)
+				}
+				return nil
+			}(),
+			version: tc.version,
+		}
+		f, diags := hclwrite.ParseConfig([]byte(tc.src), tc.filename, hcl.Pos{Line: 1, Column: 1})
+		if diags.HasErrors() {
+			t.Fatalf("unexpected diagnostics: %s", diags)
+		}
+
+		err := u.Update(context.Background(), nil, tc.filename, f)
+		if tc.ok && err != nil {
+			t.Errorf("Update() with src = %s, newSrc = %s, name = %s, version = %s returns unexpected err: %+v", tc.src, tc.newSource, tc.name, tc.version, err)
+		}
+		if !tc.ok && err == nil {
+			t.Errorf("Update() with src = %s, newSrc = %s, name = %s, version = %s expects to return an error, but no error", tc.src, tc.newSource, tc.name, tc.version)
+		}
+
+		got := string(hclwrite.Format(f.BuildTokens(nil).Bytes()))
+		if got != tc.want {
+			t.Errorf("Update() with src = %s, newSrc = %s, name = %s, version = %s returns %s, but want = %s", tc.src, tc.newSource, tc.name, tc.version, got, tc.want)
+		}
+	}
+}
+
+func TestTfsModuleUpdaterRegex(t *testing.T) {
+	cases := []struct {
+		filename        string
+		src             string
+		name            string
+		source					string
+		newSource				string
+		sourceMatchType string
+		version         string
+		want            string
+		ok              bool
+	}{
 // TODO: add new test cases for regex support & keep them separated for now
 		{
 			filename: "main.tf",
@@ -291,6 +337,7 @@ module "vpc2" {
 		}
 	}
 }
+
 
 // TODO: update the name of the original test function to be for registry to registry
 func TestParseTfsModuleSource(t *testing.T) {
