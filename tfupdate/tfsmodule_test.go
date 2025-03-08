@@ -82,7 +82,10 @@ func TestTfsModuleUpdater_PrivateRegistryToPrivateRegistry(t *testing.T) {
 		want            string
 		ok              bool
 	}{
+		// TODO: create a test case such that the newSource is not a valid source, which should error out
 		{
+			// single module update
+			// TODO: implement the logic to make this test case pass
 			filename: "main.tf",
 			src: `
 module "vpc" {
@@ -103,6 +106,8 @@ module "vpc" {
 			ok: true,
 		},
 		{
+			// multiple module update
+			// TODO: implement the logic to make this test case pass
 			filename: "main.tf",
 			src: `
 module "vpc1" {
@@ -152,9 +157,8 @@ module "vpc" {
 `,
 			ok: true,
 		},
-		// TODO: create a test case such that the newSource is not a valid source, which should error out
-		// TODO: create a test case such that version does not exist as we are not checking for version
 		{
+			// TODO: implement the logic to make this test case pass
 			// update module with no version
 			// same private registry
 			filename: "main.tf",
@@ -163,11 +167,10 @@ module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 }
 `,
-			name:            "terraform-aws-modules/vpc/aws",
+			name: "terraform-aws-modules/vpc/aws",
 			source: "terraform-aws-modules/vpc/aws",
-			newSource: "terraform-aws-modules/vpc2/aws", // this could be more distinct
+			newSource: "terraform-aws-modules/vpc2/aws",
 			sourceMatchType: "full",
-			// version:         "2.18.0",
 			want: `
 module "vpc" {
   source = "terraform-aws-modules/vpc2/aws"
