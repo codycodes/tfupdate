@@ -85,6 +85,26 @@ func TestTfsModuleUpdaterHashiCorpModuleSources(t *testing.T) {
 		// Follow the cases shown on https://developer.hashicorp.com/terraform/language/modules/sources
 		// TODO: create a test case such that the newSource is not a valid source, which should error out
 		{
+			// TODO: implement the logic to make this test case pass
+			// Terraform Registry (public registry) to Terraform Registry (public registry)
+			filename: "main.tf",
+			src: `
+module "vpc" {
+  source = "terraform-aws-modules/vpc/aws"
+}
+`,
+			name: "terraform-aws-modules/vpc/aws",
+			source: "terraform-aws-modules/vpc/aws",
+			newSource: "terraform-aws-modules/vpc2/aws",
+			sourceMatchType: "full",
+			want: `
+module "vpc" {
+  source = "terraform-aws-modules/vpc2/aws"
+}
+`,
+			ok: true,
+		},
+		{
 			// single module update - localterraform.com to some registry
 			// TODO: implement the logic to make this test case pass
 			filename: "main.tf",
@@ -154,27 +174,6 @@ module "vpc" {
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "2.17.0"
-}
-`,
-			ok: true,
-		},
-		{
-			// TODO: implement the logic to make this test case pass
-			// update module with no version
-			// same private registry
-			filename: "main.tf",
-			src: `
-module "vpc" {
-  source = "terraform-aws-modules/vpc/aws"
-}
-`,
-			name: "terraform-aws-modules/vpc/aws",
-			source: "terraform-aws-modules/vpc/aws",
-			newSource: "terraform-aws-modules/vpc2/aws",
-			sourceMatchType: "full",
-			want: `
-module "vpc" {
-  source = "terraform-aws-modules/vpc2/aws"
 }
 `,
 			ok: true,
