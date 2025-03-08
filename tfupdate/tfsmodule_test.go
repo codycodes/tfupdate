@@ -131,7 +131,7 @@ module "vpc2" {
 			ok: true,
 		},
 		{
-			// do not update non-matching module name
+			// do not update non-matching module name from source / newSource
 			filename: "main.tf",
 			src: `
 module "vpc" {
@@ -139,11 +139,11 @@ module "vpc" {
   version = "2.17.0"
 }
 `,
-			name:            "terraform-aws-modules/hoge/aws",
+			name: "terraform-aws-modules/hoge/aws",
 			source: "terraform-aws-modules/hoge/aws",
-			newSource: "terraform-aws-modules/hoge/aws", // this could be a different module
+			newSource: "terraform-aws-modules2/hoge/aws",
 			sourceMatchType: "full",
-			// version:         "2.18.0",
+			version:         "2.17.0",
 			want: `
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
@@ -152,6 +152,8 @@ module "vpc" {
 `,
 			ok: true,
 		},
+		// TODO: create a test case such that the newSource is not a valid source, which should error out
+		// TODO: create a test case such that version does not exist as we are not checking for version
 		{
 			// update module with no version
 			// same private registry
