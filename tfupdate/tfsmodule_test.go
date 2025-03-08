@@ -96,7 +96,7 @@ module "vpc" {
 			sourceMatchType: "full",
 			want: `
 module "vpc" {
-  source  = "app.terraform.io/my-org/terraform-aws-modules/vpc/aws",
+  source  = "app.terraform.io/my-org/terraform-aws-modules/vpc/aws"
   version = "2.17.0"
 }
 `,
