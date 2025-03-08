@@ -20,12 +20,25 @@ See what happens when:
 
 should match from a prefixed source of something to something else. I want to start with localterraform.com to a terraform cloud/enterprise source and vice-versa.
 
-Simple things to start with:
+## [HashiCorp provided ways to reference modules](https://developer.hashicorp.com/terraform/language/modules/sources)
+
+- [ ] Local paths
+- [ ] Terraform Registry
+- [ ] GitHub
+- [ ] Bitbucket
+- [ ] Generic Git, Mercurial repositories
+- [ ] HTTP URLs
+- [ ] S3 buckets
+- [ ] GCS buckets
+- [ ] Modules in Package Sub-directories
+
+## Simple functionality to start with
 
 - [ ] Do not change a source if newSource is not valid
 - [ ] Ability to change a single module that does not have a specified version
 - [ ] Do not modify modules which do not match
-
-Future things
-
 - [ ] Ability to handle git source
+
+### Future Things to get to
+
+- [ ] Handle regex matching
