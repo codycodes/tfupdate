@@ -209,6 +209,26 @@ module "example" {
 			// TODO: implement the logic to make this test case pass
 			filename: "main.tf",
 			src: `
+module "consul" {
+  source = "bitbucket.org/hashicorp/terraform-consul-aws"
+}
+`,
+			name: "Bitbucket to Bitbucket (git/mercurial agnostic)",
+			source: "bitbucket.org/hashicorp/terraform-consul-aws",
+			newSource: "bitbucket.org/hashicorp-new/terraform-consul-aws",
+			sourceMatchType: "full",
+			want: `
+module "consul" {
+  source = "bitbucket.org/hashicorp-new/terraform-consul-aws"
+}
+`,
+			ok: true,
+		},
+
+		{
+			// TODO: implement the logic to make this test case pass
+			filename: "main.tf",
+			src: `
 module "vpc" {
   source  = "localterraform.com/my-org/terraform-aws-modules/vpc/aws"
   version = "2.17.0"
