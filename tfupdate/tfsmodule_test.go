@@ -167,6 +167,25 @@ module "example" {
 		},
 
 		{
+			filename: "main.tf",
+			src: `
+module "example" {
+  source = "github.com/hashicorp/example?ref=v1.0.0"
+}
+`,
+			name: "GitHub (git) to GitHub (git) with ref parameter",
+			source: "github.com/hashicorp/example?ref=v1.0.0",
+			newSource: "github.com/hashicorp-new/example?ref=v1.0.0",
+			sourceMatchType: "full",
+			want: `
+module "example" {
+  source = "github.com/hashicorp-new/example?ref=v1.0.0"
+}
+`,
+			ok: true,
+		},
+
+		{
 			// TODO: implement the logic to make this test case pass
 			filename: "main.tf",
 			src: `
