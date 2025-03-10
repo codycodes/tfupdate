@@ -22,10 +22,10 @@ should match from a prefixed source of something to something else. I want to st
 
 ## [HashiCorp provided ways to reference modules](https://developer.hashicorp.com/terraform/language/modules/sources)
 
-- [ ] Local paths
-- [ ] Terraform Registry
-- [ ] GitHub
-- [ ] Bitbucket
+- [x] Local paths
+- [x] Terraform Registry
+- [x] GitHub
+- [x] Bitbucket
 - [ ] Generic Git, Mercurial repositories
 - [ ] HTTP URLs
 - [ ] S3 buckets
