@@ -84,6 +84,27 @@ func TestTfsModuleUpdaterHashiCorpModuleSources(t *testing.T) {
 	}{
 		// Follow the cases shown on https://developer.hashicorp.com/terraform/language/modules/sources
 		// TODO: create a test case such that the newSource is not a valid source, which should error out
+
+		{
+			// TODO: implement the logic to make this test case pass
+			// Terraform Registry (public registry) to Terraform Registry (public registry)
+			filename: "main.tf",
+			src: `
+module "consul" {
+  source = "./consul"
+}
+`,
+			name: "Local Path",
+			source: "./consul",
+			newSource: "./consul-new",
+			sourceMatchType: "full",
+			want: `
+module "consul" {
+  source = "./consul-new"
+}
+`,
+			ok: true,
+		},
 		{
 			// TODO: implement the logic to make this test case pass
 			// Terraform Registry (public registry) to Terraform Registry (public registry)
