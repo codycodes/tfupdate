@@ -170,6 +170,26 @@ module "example" {
 			// TODO: implement the logic to make this test case pass
 			filename: "main.tf",
 			src: `
+module "example" {
+  source = "git@github.com:hashicorp/example.git"
+}
+`,
+			name: "GitHub (git)to GitHub (git) via SSH",
+			source: "git@github.com:hashicorp/example.git",
+			newSource: "git@github.com:hashicorp-new/example.git",
+			sourceMatchType: "full",
+			want: `
+module "example" {
+  source = "git@github.com:hashicorp-new/example.git"
+}
+`,
+			ok: true,
+		},
+
+		{
+			// TODO: implement the logic to make this test case pass
+			filename: "main.tf",
+			src: `
 module "vpc" {
   source  = "localterraform.com/my-org/terraform-aws-modules/vpc/aws"
   version = "2.17.0"
