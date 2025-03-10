@@ -145,6 +145,27 @@ module "vpc" {
 `,
 			ok: true,
 		},
+
+		{
+			// TODO: implement the logic to make this test case pass
+			filename: "main.tf",
+			src: `
+module "example" {
+  source = "github.com/hashicorp/example"
+}
+`,
+			name: "GitHub (git)to GitHub (git) via HTTPS",
+			source: "github.com/hashicorp/example",
+			newSource: "github.com/hashicorp-new/example",
+			sourceMatchType: "full",
+			want: `
+module "example" {
+  source = "github.com/hashicorp-new/example"
+}
+`,
+			ok: true,
+		},
+
 		{
 			// TODO: implement the logic to make this test case pass
 			filename: "main.tf",
