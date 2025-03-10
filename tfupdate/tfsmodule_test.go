@@ -123,6 +123,28 @@ module "vpc" {
 `,
 			ok: true,
 		},
+
+		{
+			// TODO: implement the logic to make this test case pass
+			filename: "main.tf",
+			src: `
+module "vpc" {
+  source  = "app.terraform.io/my-org/terraform-aws-modules/vpc/aws"
+  version = "2.17.0"
+}
+`,
+			name: "Terraform Cloud / Terraform Enterprise Registry to Terraform Cloud / Terraform Enterprise Registry",
+			source: "localterraform.com/my-org/terraform-aws-modules/vpc/aws",
+			newSource: "app.terraform.io/my-new-org/terraform-aws-modules/vpc/aws",
+			sourceMatchType: "full",
+			want: `
+module "vpc" {
+  source  = "app.terraform.io/my-new-org/terraform-aws-modules/vpc/aws"
+  version = "2.17.0"
+}
+`,
+			ok: true,
+		},
 		{
 			// TODO: implement the logic to make this test case pass
 			filename: "main.tf",
