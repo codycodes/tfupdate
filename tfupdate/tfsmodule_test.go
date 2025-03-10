@@ -224,6 +224,26 @@ module "consul" {
 `,
 			ok: true,
 		},
+		{
+			// TODO: implement the logic to make this test case pass
+			filename: "main.tf",
+			src: `
+module "vpc" {
+  source = "git::https://example.com/vpc.git"
+}
+`,
+			name: "Generic Git Repository",
+			source: "git::https://example.com/vpc.git",
+			newSource: "git::https://example2.com/vpc.git",
+			sourceMatchType: "full",
+			want: `
+module "vpc" {
+  source = "git::https://example2.com/vpc.git"
+}
+`,
+			ok: true,
+		},
+
 
 		{
 			// TODO: implement the logic to make this test case pass
@@ -292,25 +312,6 @@ module "vpc" {
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "2.17.0"
-}
-`,
-			ok: true,
-		},
-		{
-			// TODO: implement the logic to make this test case pass
-			filename: "main.tf",
-			src: `
-module "vpc" {
-  source = "git::https://example.com/vpc.git"
-}
-`,
-			name: "git source",
-			source: "git::https://example.com/vpc.git",
-			newSource: "git::https://example2.com/vpc.git",
-			sourceMatchType: "full",
-			want: `
-module "vpc" {
-  source = "git::https://example2.com/vpc.git"
 }
 `,
 			ok: true,
