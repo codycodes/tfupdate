@@ -186,6 +186,25 @@ module "example" {
 		},
 
 		{
+			filename: "main.tf",
+			src: `
+module "example" {
+  source = "github.com/hashicorp/example?ref=51d462976d84fdea54b47d80dcabbf680badcdb8"
+}
+`,
+			name: "GitHub (git) to GitHub (git) with ref parameter (SHA-1)",
+			source: "github.com/hashicorp/example?ref=51d462976d84fdea54b47d80dcabbf680badcdb8",
+			newSource: "github.com/hashicorp-new/example?ref=51d462976d84fdea54b47d80dcabbf680badcdb8",
+			sourceMatchType: "full",
+			want: `
+module "example" {
+  source = "github.com/hashicorp-new/example?ref=51d462976d84fdea54b47d80dcabbf680badcdb8"
+}
+`,
+			ok: true,
+		},
+
+		{
 			// TODO: implement the logic to make this test case pass
 			filename: "main.tf",
 			src: `
