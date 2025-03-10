@@ -87,7 +87,6 @@ func TestTfsModuleUpdaterHashiCorpModuleSources(t *testing.T) {
 
 		{
 			// TODO: implement the logic to make this test case pass
-			// Terraform Registry (public registry) to Terraform Registry (public registry)
 			filename: "main.tf",
 			src: `
 module "consul" {
@@ -107,14 +106,13 @@ module "consul" {
 		},
 		{
 			// TODO: implement the logic to make this test case pass
-			// Terraform Registry (public registry) to Terraform Registry (public registry)
 			filename: "main.tf",
 			src: `
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 }
 `,
-			name: "terraform-aws-modules/vpc/aws",
+			name: "Terraform Registry (public registry) to Terraform Registry (public registry)",
 			source: "terraform-aws-modules/vpc/aws",
 			newSource: "terraform-aws-modules/vpc2/aws",
 			sourceMatchType: "full",
@@ -126,7 +124,6 @@ module "vpc" {
 			ok: true,
 		},
 		{
-			// single module update - localterraform.com to some registry
 			// TODO: implement the logic to make this test case pass
 			filename: "main.tf",
 			src: `
@@ -135,7 +132,7 @@ module "vpc" {
   version = "2.17.0"
 }
 `,
-			name:            "terraform-aws-modules/vpc/aws",
+			name: "single module update - localterraform.com to some registry",
 			source: "localterraform.com/my-org/terraform-aws-modules/vpc/aws",
 			newSource: "app.terraform.io/my-org/terraform-aws-modules/vpc/aws",
 			sourceMatchType: "full",
@@ -148,7 +145,6 @@ module "vpc" {
 			ok: true,
 		},
 		{
-			// multiple module update
 			// TODO: implement the logic to make this test case pass
 			filename: "main.tf",
 			src: `
@@ -161,7 +157,7 @@ module "vpc2" {
   version = "2.18.0"
 }
 `,
-			name: "terraform-aws-modules/vpc/aws",
+			name: "multiple module update",
 			source: "localterraform.com/my-org/terraform-aws-modules/vpc/aws",
 			newSource: "app.terraform.io/my-org/terraform-aws-modules/vpc/aws",
 			sourceMatchType: "full",
@@ -178,7 +174,6 @@ module "vpc2" {
 			ok: true,
 		},
 		{
-			// do not update non-matching module name from source / newSource
 			filename: "main.tf",
 			src: `
 module "vpc" {
@@ -186,7 +181,7 @@ module "vpc" {
   version = "2.17.0"
 }
 `,
-			name: "terraform-aws-modules/hoge/aws",
+			name: "do not update non-matching module name from source / newSource",
 			source: "terraform-aws-modules/hoge/aws",
 			newSource: "terraform-aws-modules2/hoge/aws",
 			sourceMatchType: "full",
@@ -201,14 +196,13 @@ module "vpc" {
 		},
 		{
 			// TODO: implement the logic to make this test case pass
-			// git source
 			filename: "main.tf",
 			src: `
 module "vpc" {
   source = "git::https://example.com/vpc.git"
 }
 `,
-			name: "git::https://example.com/vpc.git",
+			name: "git source",
 			source: "git::https://example.com/vpc.git",
 			newSource: "git::https://example2.com/vpc.git",
 			sourceMatchType: "full",
