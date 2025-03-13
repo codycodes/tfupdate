@@ -262,6 +262,25 @@ module "vpc" {
 `,
 			ok: true,
 		},
+		{
+			// TODO: implement the logic to make this test case pass
+			filename: "main.tf",
+			src: `
+module "storage" {
+  source = "git::ssh://username@example.com/storage.git"
+}
+`,
+			name: "Generic Git Repository to Generic Git Repository (SSH)",
+			source: "git::ssh://username@example.com/storage.git",
+			newSource: "git::ssh://username@example2.com/storage.git",
+			sourceMatchType: "full",
+			want: `
+module "storage" {
+  source = "git::ssh://username@example2.com/storage.git"
+}
+`,
+			ok: true,
+		},
 
 
 		{
