@@ -262,6 +262,27 @@ module "vpc" {
 `,
 			ok: true,
 		},
+
+		{
+			// TODO: implement the logic to make this test case pass
+			filename: "main.tf",
+			src: `
+module "vpc" {
+  source = "git::https://example.com/vpc.git?depth=1&ref=v1.2.0"
+}
+`,
+			name: "Generic Git repo with depth & ref parameters",
+			source: "git::https://example.com/vpc.git?depth=1&ref=v1.2.0",
+			newSource: "git::https://example2.com/vpc.git?depth=1&ref=v1.2.0",
+			sourceMatchType: "full",
+			want: `
+module "vpc" {
+  source = "git::https://example2.com/vpc.git?depth=1&ref=v1.2.0"
+}
+`,
+			ok: true,
+		},
+
 		{
 			// TODO: implement the logic to make this test case pass
 			filename: "main.tf",
