@@ -281,6 +281,25 @@ module "storage" {
 `,
 			ok: true,
 		},
+		{
+			// TODO: implement the logic to make this test case pass
+			filename: "main.tf",
+			src: `
+module "storage" {
+  source = "git::username@example.com:storage.git"
+}
+`,
+			name: "Generic Git Repository to Generic Git Repository (scp-like syntax)",
+			source: "git::username@example.com:storage.git",
+			newSource: "git::username@example2.com:storage.git",
+			sourceMatchType: "full",
+			want: `
+module "storage" {
+  source = "git::username@example2.com:storage.git"
+}
+`,
+			ok: true,
+		},
 
 
 		{
