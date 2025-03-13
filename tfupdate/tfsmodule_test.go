@@ -322,6 +322,25 @@ module "storage" {
 			ok: true,
 		},
 
+		{
+			// TODO: implement the logic to make this test case pass
+			filename: "main.tf",
+			src: `
+module "vpc" {
+  source = "hg::http://example.com/vpc.hg"
+}
+`,
+			name: "Generic Mercurial Repository",
+			source: "hg::https://example.com/vpc.hg",
+			newSource: "hg::http://example2.com/vpc.hg",
+			sourceMatchType: "full",
+			want: `
+module "vpc" {
+  source = "hg::http://example2.com/vpc.hg"
+}
+`,
+			ok: true,
+		},
 
 		{
 			// TODO: implement the logic to make this test case pass
